@@ -1,0 +1,20 @@
+../../progs.dat                                        // Output File
+
+#define SSQC
+#define DEBUG 0
+#pragma includedir "../"
+#pragma warning disable Q208
+
+progsdefs.qc  
+dpextensions.qc                                           // Definitions
+
+// main
+main.qc                                             // Main subroutines    
+
+// player
+player/client.qc                                           // Client subroutines
+player/sv_user.qc                                          // movement
+
+// entities 
+//entities/lights.qc                                  // Light Entities
+entities/dummy.qc
