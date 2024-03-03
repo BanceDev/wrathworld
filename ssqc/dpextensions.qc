@@ -2441,11 +2441,11 @@ void(entity e, string s) clientcommand = #440;
 float(string s) tokenize = #441;
 string(float n) argv = #442;
 
-//void check_custom_cvars(void);
-//void check_infinite_saves(void);
-//void Toggle_Journal(void);
-//void CMD_journal_close(void);
-//void CMD_dmenu_close(void);
+void check_custom_cvars(void);
+void check_infinite_saves(void);
+void Toggle_Journal(void);
+void CMD_journal_close(void);
+void CMD_dmenu_close(void);
 void(string str) SV_ParseClientCommand =
 {
 
@@ -2466,12 +2466,12 @@ void(string str) SV_ParseClientCommand =
 		if((encounternumber >= 0) && (encounternumber <= 5))
 		{
 			single_player.oldrelics = encounternumber;
-			//centerprint(single_player, strcat("forced encounter number: ",ftos(encounternumber),"\n"));
+			centerprint(single_player, strcat("forced encounter number: ",ftos(encounternumber),"\n"));
 			entity mspawner =findchain(classname, "enemy_spawner");
 			while (mspawner)
 			{
 				
-				//mspawner.think = check_spawner_counter;
+				mspawner.think = check_spawner_counter;
 				mspawner.nextthink = time + random();
 				mspawner= mspawner.chain;
 			}
@@ -2479,13 +2479,13 @@ void(string str) SV_ParseClientCommand =
 			while (mspawnerwarp)
 			{
 				
-				//mspawnerwarp.think = check_spawner_counter;
+				mspawnerwarp.think = check_spawner_counter;
 				mspawnerwarp.nextthink = time + random();
 				mspawnerwarp= mspawnerwarp.chain;
 			}
 		}
 		else
-			//centerprint(single_player,"no valid encounter number\n");
+			centerprint(single_player,"no valid encounter number\n");
 		return;
 	}
 	else if (cmd == "removeall")
@@ -2539,24 +2539,24 @@ void(string str) SV_ParseClientCommand =
 		dprint("^3--  END REMOVAL LIST  --\n");
 		return;
 	}
-	// else if (cmd == "check_custom_cvars")
-	// {
-	// 	check_custom_cvars();
-	// 	return;
-	// }
-	// else if (cmd == "check_infinite_saves")
-	// {
-	// 	check_infinite_saves();
-	// 	return;
-	// }
+	else if (cmd == "check_custom_cvars")
+	{
+		check_custom_cvars();
+		return;
+	}
+	else if (cmd == "check_infinite_saves")
+	{
+		check_infinite_saves();
+		return;
+	}
 	else if (cmd == "dmenu_close") // Reki (February 3 2024): Moving this to a cmd, because impulses are unreliable
 	{
-		//CMD_dmenu_close();
+		CMD_dmenu_close();
 		return;
 	}
 	else if (cmd == "journal_close")
 	{
-		//CMD_journal_close();
+		CMD_journal_close();
 		return;
 	}
 

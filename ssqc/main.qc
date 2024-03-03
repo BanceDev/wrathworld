@@ -1,21 +1,253 @@
 void() precaches;
-
+.float timeflyc;
+.float vhud;
 void() main = {};
+//void() SetNewParms = {};
+//void() SetChangeParms = {};
+void() check_itemsize;
+void() check_itemflash;
+void()check_itemsigil_flash;
+void() check_coffer;
+void() check_attar;
+void() check_itemlight;
+void() check_itemammount;
+void() check_enemies_frik;
+void() Precache;
+void() check_tether;
+void()check_maxammo;
+.float message_number;
+void() CSQC_AddStats = 
+{ 
+	SV_AddStatFloat(STAT_RMENU, 8, rmenu);
+	SV_AddStatFloat(STAT_LF, 8, lf);
+	SV_AddStatFloat(STAT_RARM, 8, rarmorvalue);
+	SV_AddStatFloat(STAT_DARM, 8, darmorvalue);
+	SV_AddStatFloat(STAT_AMMO_CANNON, 8, ammo_cannon);
+	SV_AddStatFloat(STAT_AMMO_BOMBS, 8, ammo_retcher);
+	SV_AddStatFloat(STAT_AMMO_REVOLVER, 8, ammo_revolver);
+	SV_AddStatFloat(STAT_AMMO_FLAMETHROWER, 8, ammo_spitter);
+	SV_AddStatFloat(STAT_AMMO_SHOTGUN, 8, ammo_shotgun);
+	SV_AddStatFloat(STAT_AMMO_LANCE, 8, ammo_lance);
+	SV_AddStatFloat(STAT_AMMO_CRYSTAL, 8, ammo_crystal);
+	SV_AddStatFloat(STAT_AMMO_MACE, 8, ammo_bfg);
 
-void() worldspawn = {
 
-    // precache all the assets
-    precaches();
+	SV_AddStatFloat(STAT_RD_ST, 8, SoulTether);
+
+	SV_AddStatFloat(STAT_RD_MR, 8, MarkRevelation);
+	SV_AddStatFloat(STAT_RD_DA, 8, DrownerApp);
+	SV_AddStatFloat(STAT_RD_BE, 8, flaskrage);
+	SV_AddStatFloat(STAT_RD_CA, 8, Attar);
+	SV_AddStatFloat(STAT_RD_VG, 8, BlackGrenade);
+	SV_AddStatFloat(STAT_RD_LS, 8, LifeSiphon);
+	SV_AddStatFloat(STAT_RD_TR, 8, TrinketofRespite);
+	SV_AddStatFloat(STAT_RD_AE, 8, Aegis);
+	SV_AddStatFloat(STAT_RD_VI, 8, ViciousIdol);
+	SV_AddStatFloat(STAT_RD_RF, 8, ShockWave);
+
+
+	SV_AddStatFloat(STAT_RADIALACTIVE, 8, radialactive);
+	SV_AddStatFloat(STAT_ARTIFACTTIME, 8, artifacttime);
+	SV_AddStatFloat(STAT_TETHERTIME, 8, tethertime);
+	SV_AddStatFloat(STAT_VWEAPONFRAME, 8, vweaponframe);
+	SV_AddStatFloat(STAT_WRATHDEBUGSCREEN, 8, wrath_debug_screen);
+	SV_AddStatFloat(STAT_ENHEALTH, 8, enhealth);
+	SV_AddStatFloat(STAT_ENFRAME, 8, enframe);
+	SV_AddStatFloat(STAT_TIMEFLY, 8, timeflyc);
+	SV_AddStatFloat(STAT_TIMELS, 8, timels);
+	SV_AddStatFloat(STAT_THWOFG, 8, vhud);
+	SV_AddStatFloat(STAT_WRATHACTIVE, 8, wrath_active);
+
+
+	SV_AddStatFloat(STAT_JOURNAL, 8, journal);
+	SV_AddStatFloat(STAT_JOURNAL_MESSAGES, 8, journal_jmessages);
+	SV_AddStatFloat(STAT_JOURNAL_MESSAGESB, 8, journal_jmessagesb);
+	SV_AddStatFloat(STAT_JOURNAL_MESSAGESM, 8, journal_jmessagesm);
+
+	SV_AddStatFloat(STAT_NORMAL_MESSAGES, 8, message_number);
+	SV_AddStatFloat(STAT_VWEAPONSTATE, 8, vweaponstate);
+	SV_AddStatFloat(STAT_LASTWEAPON, 8, lastweapon);
+	SV_AddStatFloat(STAT_DEADMENU, 8, deadmenuflag);
+	SV_AddStatFloat(STAT_DAMAGESCREEN, 8, damagescreen);
+	SV_AddStatFloat(STAT_CROSSHAIR, 8, crosshairflag);
+	SV_AddStatFloat(STAT_SHRINE, 8, shrine);
+	SV_AddStatFloat(STAT_TETHER, 8, tetherhasmodel);
+	SV_AddStatFloat(STAT_RELICS, 8, relics);
+	SV_AddStatFloat(STAT_SLOT_KEYS, 8, slot_keys);
+	SV_AddStatFloat(STAT_TIME_HUDMESSAGE, 8, stat_time_hudmessage);
+	SV_AddStatFloat(STAT_SPOTTED_MAPS, 8, spotted_maps);
+	SV_AddStatFloat(STAT_USED_RELICS, 8, oldrelics);
+	SV_AddStatFloat(STAT_FOUND_RELICS, 8, foundedrelics);
+
+	SV_AddStatFloat(CAM_ORG_X, 8, cam_org_x);
+	SV_AddStatFloat(CAM_ORG_Y, 8, cam_org_y);
+	SV_AddStatFloat(CAM_ORG_Z, 8, cam_org_z);
+	SV_AddStatFloat(CAM_ANG_X, 8, cam_ang_x);
+	SV_AddStatFloat(CAM_ANG_Y, 8, cam_ang_y);
+	SV_AddStatFloat(CAM_ANG_Z, 8, cam_ang_z);
+
+	SV_AddStatFloat(STAT_SATURATION, 8, r_saturation);
+	SV_AddStatFloat(STAT_HEALTHHAZE, 8, r_healthhaze);
+	SV_AddStatFloat(STAT_ZOOM, 8, r_zoom);
+
+	SV_AddStatFloat(STAT_ENDSCREENSTART, 8, r_endscreen);
 };
 
-void() SetNewParms = {};
+void(entity client, string s) centerprint = {
+	float msg_type = MSG_ALL;
+	if (client != world)
+		msg_type = MSG_ONE;
+	msg_entity = client;
 
-void() SetChangeParms = {};
+	WriteByte(msg_type, SVC_TEMPENTITY);
+	WriteByte(msg_type, TEMPENT::CENTERPRINT);
+	WriteString(msg_type, s);
+}
 
-void() StartFrame = {};
+entity lastspawn;
+.float episode;
+
+void() worldspawn = 
+{ 
+	lastspawn = world;
+	skill = cvar("skill");
+
+
+
+
+	if(!(world.episode))
+	{
+	if ((self.model == "maps/intro.bsp") || (self.model == "maps/hub1.bsp") || (self.model == "maps/e1m1.bsp") ||
+(self.model == "maps/e1m2.bsp") || (self.model == "maps/e1m3.bsp")|| (self.model == "maps/e1m4.bsp")|| (self.model == "maps/e1m5.bsp")|| (self.model == "maps/boss1.bsp"))
+	world.episode = 1;
+	else if ( (self.model == "maps/hub2.bsp") || (self.model == "maps/e2m1.bsp") ||
+(self.model == "maps/e2m2.bsp") || (self.model == "maps/e2m3.bsp")|| (self.model == "maps/e2m4.bsp")|| (self.model == "maps/e2m5.bsp")|| (self.model == "maps/boss2.bsp")|| (self.model == "maps/urns2.bsp"))
+	world.episode = 2;
+	else if ( (self.model == "maps/hub3.bsp") || (self.model == "maps/e3m1.bsp") ||
+(self.model == "maps/e3m2.bsp") || (self.model == "maps/e3m3.bsp")|| (self.model == "maps/e3m4.bsp")|| (self.model == "maps/e3m5.bsp")|| (self.model == "maps/boss3.bsp"))
+	world.episode = 3;
+	}
+
+	if(!(world.episode))
+		world.episode = 1;
+	
+	// Reki (February 14 2024): keep track of our up-to-date save
+	// compatibility versions, we'll need to fix stuff if this changes
+	map_save_version = world.map_version;
+	prog_save_version = PROG_SAVE_VERSION;
+	world.prog_version = PROG_SAVE_VERSION;
+	//
+
+	//Precache();
+	check_enemies_frik();
+	check_itemammount();
+	check_itemflash();
+	check_itemsigil_flash();
+	check_itemsize();
+	check_coffer();
+	check_attar();
+	check_shockwave();
+	check_itemlight();
+	check_maxammo();
+	float noqcprecaches = cvar("cl_noqcprecache");	
+	if(noqcprecaches != 1)
+	precaches();
+	CSQC_AddStats();
+	//	check_tether();
+	globalfake_illumination = 1;
+	//
+	// Setup light animation tables. 'a' is total darkness, 'z' is maxbright.
+	//
+	// 0 normal
+	lightstyle(0, "m");
+
+	// 1 FLICKER (first variety)
+	lightstyle(1, "mmnmmommommnonmmonqnmmo");
+
+	// 2 SLOW STRONG PULSE
+	lightstyle(2, "abcdefghijklmnopqrstuvwxyzyxwvutsrqponmlkjihgfedcba");
+
+	// 3 CANDLE (first variety)
+	lightstyle(3, "mmmmmaaaaammmmmaaaaaabcdefgabcdefg");
+
+	// 4 FAST STROBE
+	lightstyle(4, "mamamamamama");
+
+	// 5 GENTLE PULSE 1
+	lightstyle(5, "jklmnopqrstuvwxyzyxwvutsrqponmlkj");
+
+	// 6 FLICKER (second variety)
+	lightstyle(6, "nmonqnmomnmomomno");
+
+	// 7 CANDLE (second variety)
+	lightstyle(7, "mmmaaaabcdefgmmmmaaaammmaamm");
+
+	// 8 CANDLE (third variety)
+	lightstyle(8, "mmmaaammmaaammmabcdefaaaammmmabcdefmmmaaaa");
+
+	// 9 SLOW STROBE (fourth variety)
+	lightstyle(9, "aaaaaaaazzzzzzzz");
+
+	// 10 FLUORESCENT FLICKER
+	lightstyle(10, "mmamammmmammamamaaamammma");
+
+	// 11 SLOW PULSE NOT FADE TO BLACK
+	lightstyle(11, "abcdefghijklmnopqrrqponmlkjihgfedcba");
+
+	// 12 LIGHTNING
+	lightstyle(12, "a");
+
+	lightstyle(13, "a");
+
+	lightstyle(14, "a");
+
+	lightstyle(16, "a");
+
+	lightstyle(17, "mmnmmommommnonmmonqnmmo");
+
+	lightstyle(18, "mmnmmommommnonmmonqnmmo");
+
+	lightstyle(19, "mmnmmommommnonmmonqnmmo");
+
+
+	// styles 32-62 are assigned by the light program for switchable lights
+
+	// 63 testing
+	lightstyle(63, "a");
+};
+
+void Timescale_RunFrame(void);
+void StartFrame()
+{
+	Timescale_RunFrame();
+}
+
+void() precache_monster_afflicted;
+void() precache_monster_brute;
+void() precache_monster_heretic;
+void() precache_monster_fallen;
+void() precache_monster_stricken;
+void() precache_monster_wraith;
+void() precache_monster_afflicted;
+void() precache_monster_invader;
+void() precache_monster_executioner;
+void() precache_monster_oppressor;
+void() precache_monster_widow;
+void() precache_monster_wretch;
+void() precache_monster_symbol;
+void() precache_monster_lurker;
+void() precache_monster_prowler;
+void() precache_monster_boss1;
+void() precache_monster_keeper;
 
 void() precaches = 
 { 
+
+
+
+	
+	
+	
 	//	precache_model ("models/items/glyph_blue.md3");
 	//	precache_model ("models/items/glyph_red.md3");
 	//	precache_model ("models/items/glyph_yellow.md3");
@@ -147,8 +379,8 @@ void() precaches =
 	precache_model ("models/objects/decor/crystals/crystal_small.md3");
 	precache_model ("models/objects/switch1.md3");
 	precache_model ("models/objects/teleporters/teleporter.md3");
-	precache_model ("models/player/outlander/footstep.md3");
-	precache_model ("models/player/outlander/outlander.md3");
+	precache_model ("models/player/footstep.md3");
+	precache_model ("models/players/outlander/player.md3");
 	precache_model ("models/projectiles/beam_crystal.md3");
 	precache_model ("models/projectiles/beam_crystala.md3");
 	precache_model ("models/projectiles/beam_crystalb.md3");
@@ -255,6 +487,21 @@ void() precaches =
 	precache_sound("weapons/mace/inspect.ogg");
 	precache_sound("enemies/wretch/proj_loop.ogg");
 	precache_sound("enemies/symbol/fire.ogg");
+
+	precache_monster_afflicted();
+	precache_monster_afflicted();
+	precache_monster_executioner();
+	precache_monster_fallen();
+	precache_monster_heretic();
+	precache_monster_invader();
+	precache_monster_oppressor();
+	precache_monster_stricken();
+	precache_monster_symbol();
+	precache_monster_widow();
+	precache_monster_wraith();
+	precache_monster_wretch();
+	precache_monster_brute();
+	precache_monster_boss1();
 
 	precache_sound ("doors/glyph_locked.ogg");
 	precache_sound ("doors/glyph_unlocked.ogg");
@@ -811,6 +1058,9 @@ void() precaches =
 	precache_sound ("weapons/spitter/lower.ogg");
 	precache_sound ("weapons/spitter/raise.ogg");
 	precache_sound ("weapons/spitter/raise.ogg");
+    precache_monster_prowler();
+    precache_monster_lurker();
+    precache_monster_keeper();
     precache_sound ("items/artifacts/artifactE_end.ogg");
     precache_sound ("objects/switch1_use.ogg");
     precache_sound ("weapons/crystaliser/fire1.ogg");
@@ -818,3 +1068,5 @@ void() precaches =
     precache_sound ("weapons/crystaliser/raise.ogg");
 	precache_sound ( "impact/destruct/skullbreak.ogg");
 };
+
+///////////////////////////////////end of qc file

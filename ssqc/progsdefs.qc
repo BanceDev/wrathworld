@@ -499,11 +499,11 @@ float	MSG_ONE			= 1;		// reliable to one (msg_entity)
 float	MSG_ALL			= 2;		// reliable to all
 float	MSG_INIT		= 3;		// write to the init string
 ////////////////////////////////////////////////////////////////////////
-//void(entity client, string s) centerprint;
+void(entity client, string s) centerprint;
 .float gravity;
 .float stepheight_delta;
 //SV_ParseClientCommand  support
-//void()check_spawner_counter;
+void()check_spawner_counter;
 entity single_player;
 .float oldrelics;
 ////////////////////////////////////////////////////////////////////////
