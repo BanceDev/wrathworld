@@ -28,7 +28,7 @@ void() info_player_deathmatch = {	//if(!self.location)
 };
 .float walking;
 void() Player_Die;
-void() ClientKill = { /*Player_Die();*/ };
+void() ClientKill = { Player_Die(); };
 void() ClientConnect = {
 	self.hudsync = spawn();
 	self.hudsync.owner = self;
@@ -44,6 +44,7 @@ void() ClientDisconnect = {
 		remove(self.hudsync);
 		self.hudsync = world;
 	}
+	ClientKill();
 };
 void() WeaponFrames;
 void() raise_weapon;
