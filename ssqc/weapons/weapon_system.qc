@@ -502,9 +502,9 @@ void(float damage, vector dir) TraceAttack = {
 					if (self.weapon == IT_LANCE)
 					{
 						if(self.lance_secondary == 1)
-							damage = self.lance_damage_mp;
-						else
 							damage = self.lance_damage2_mp;
+						else
+							damage = self.lance_damage_mp;
 					}
 				}
 				
