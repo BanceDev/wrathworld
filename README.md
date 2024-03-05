@@ -18,7 +18,7 @@ Join the discord to become part of the development or to playtest and get early 
 
 Need help with using WrathWorld? Ping Bance in the discord with any questions.
 
-If you have found a bug, please report it [here][issues]
+If you have found a bug, please report it [[here][issues]](https://github.com/BanceDev/wrathworld/issues)
 
 ## Installation guide
 
