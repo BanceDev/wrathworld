@@ -37,20 +37,20 @@ void() BackpackTouch =
     other.ammo_spitter += self.ammo_spitter;
 
 	// give active weapon
-	if (self.netname = "Lance")
-		other.items |= IT_LANCE;
-	else if (self.netname = "Crystalizer")
-		other.items |= IT_CRYSTAL;
-	else if (self.netname = "Cannon")
-		other.items |= IT_CANNON;
-	else if (self.netname = "Retcher")
-		other.items |= IT_RETCHER;
-	else if (self.netname = "Spitter")
-		other.items |= IT_SPITTER;
+	if (self.netname == "Lance")
+		other.items += IT_LANCE;
+	else if (self.netname == "Crystalizer")
+		other.items += IT_CRYSTAL;
+	else if (self.netname == "Cannon")
+		other.items += IT_CANNON;
+	else if (self.netname == "Retcher")
+		other.items += IT_RETCHER;
+	else if (self.netname == "Spitter")
+		other.items += IT_SPITTER;
 	else if (self.netname == "Shotgun")
-		other.items |= IT_SHOTGUN;
+		other.items += IT_SHOTGUN;
 	else if (self.netname == "Revolver")
-		other.items |= IT_REVOLVER;
+		other.items += IT_REVOLVER;
 
 	//play sound
 	sound (other, CHAN_ITEM, "items/ammo_shotgun.ogg", 1, ATTN_NORM);
