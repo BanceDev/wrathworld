@@ -405,6 +405,7 @@ void(entity targ, entity attacker, float gibable) Killed =
 		self.deadflag = DEAD_DEAD;
 		self.deadwaiting = time + 0.2;
 		self.r_healthhaze = 0.4;
+		DropBackpack();
 
 		remove(self.vweapon);
 		if (self.waterlevel >= 3)

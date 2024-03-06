@@ -159,6 +159,11 @@ void() Player_Die = {
 	self.journal = 0;
 	self.rmenu = 0;
 
+	// give packs in deathmatch
+	if (deathmatch == 1) {
+		DropBackpack();
+	}
+
 	if (self.waterlevel >= 3)
 		playersound("player/die_underwater", 2);
 	else
@@ -188,7 +193,6 @@ void(entity attacker, float dmg) Player_Pain =
 };
 
 void() PlayerDeathThink = { local float forward;
-
 	if (self.deadflag == DEAD_DEAD)
 	{
 		client_garbage_collector(self);

@@ -3717,6 +3717,9 @@ void(vector org, string class, float ammount, entity slf) convert_to_item =
 		self.itemisweapon = 1;
 		setmodel(self, "models/weapons/shotgun/w_shotgun.md3");
 		self.ammo_shotgun = 2;
+		if (deathmatch == 1) {
+			self.ammo_shotgun = 10;
+		}
 		StartItem(1);
 		self.modelflags = MF_ROTATE;
 		self.origin_z += 24;

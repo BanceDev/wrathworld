@@ -18,13 +18,13 @@ frik_file.qc
 
 main.qc                                             // Main subroutines
 gore.qc
+mprules.qc                                          // multiplayer rules functions
 
 timescale.qc										// controls slowmo
 dmg_system.qc
 
 //sprites.qc
 editor/editor.qc
-
 
 ../localization.qc
 func_readable.qc
@@ -68,6 +68,7 @@ entities/jumpad.qc
 entities/portal.qc
 ../orrey.qc
 ../shepherd.qc
+
 
 
 monsters/ai.qc

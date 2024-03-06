@@ -247,7 +247,7 @@ void() precaches =
 
 	
 	
-	
+	precache_model("progs/backpack.mdl");
 	//	precache_model ("models/items/glyph_blue.md3");
 	//	precache_model ("models/items/glyph_red.md3");
 	//	precache_model ("models/items/glyph_yellow.md3");

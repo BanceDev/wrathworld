@@ -25,7 +25,7 @@ void Timescale_RunFrame(void)
 		players++;
 
 		// if in a multiplayer game
-		if (players > 1) {
+		if (deathmatch == 1) {
 			timescale_wanted = 1;
 			break;
 		}
