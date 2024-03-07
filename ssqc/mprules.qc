@@ -102,7 +102,7 @@ void DropBackpack() = {
 	pack.flags = FL_ITEM;
 	pack.solid = SOLID_TRIGGER;
 	pack.movetype = MOVETYPE_TOSS;
-	setmodel (pack, "models/items/backpack.md3");
+	setmodel (pack, "models/items/wrath_backpack.md3");
 	setsize (pack, '-16 -16 0', '16 16 56');
 	pack.touch = BackpackTouch;
 	
