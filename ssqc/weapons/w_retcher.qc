@@ -436,7 +436,9 @@ void(float rtag) W_Fireretcher = { local vector dir, rorg, tagorg;
 
 		playerwsound("weapons/retcher/fire1_", 5, CHAN_AUTO);
 		newmis.cnt = 1;
-		newmis.clipgroup = 1;
+		if (deathmatch == 0) {
+			newmis.clipgroup = 1;
+		}
 		newmis.lifetime = time + 15;
 		//setsize (newmis, '0 0 0', '0 0 0');
 	}
