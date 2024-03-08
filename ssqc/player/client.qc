@@ -3826,6 +3826,12 @@ void() PutClientInServer = {
 	self.holdcannontime = 0.1;
 	PlayerValuesEditor();
 	check_retcher();
+	// give the player revolver on spawn in mp
+	if (deathmatch != 0) {
+		self.items += IT_REVOLVER;
+		self.weapon = IT_REVOLVER;
+		self.ammo_revolver = 25;
+	}
 	if (!self.nomelee)
 		raise_weapon();
 	else
