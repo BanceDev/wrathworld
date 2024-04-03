@@ -118,8 +118,7 @@ void() lower_think =
 	if(self.owner.onground_time > time)
 	{
 		float speed = vlen (self.owner.velocity);
-		float ownerForward = checkUPS_forward(self.owner);
-		
+	//	float ownerForward = checkUPS_forward(self.owner);
 	//	centerprint(self.owner, ftos(ownerForward));
 		
 		if (speed > 30)
@@ -129,30 +128,33 @@ void() lower_think =
 				self.frame = 10;
 				
 				if (self.frame == 10)
-					self.origin == self.origin + '0 0 10';
+				{
+				//	self.origin = self.origin + '0 0 20';
+				}
 				else
-					self.origin == self.origin - '0 0 10';
+				{
+					//self.origin = self.origin - '0 0 20';
+				}
 			}
 			else
 			{	
-			//	self.frame = 3; //RUN FORWARD FRAMEGROUP
-				
-				if (ownerForward > 300)
+			
+				if (checkUPS_forward(self.owner) > 300)
 				{
 					self.frame = 3; //RUN FORWARD FRAMEGROUP
+
 				}
-				
-				if (ownerForward < 300)
+				else if (checkUPS_forward(self.owner) < -300)
 				{
 					self.frame = 4; //RUN BACK FRAMEGROUP
-				}
 
-				if (checkUPS_right(self.owner) > 300)
+				}
+				else if (checkUPS_right(self.owner) > 300)
 				{
 					self.frame = 6;
-				}
 
-				if (checkUPS_right(self.owner) < 300)
+				}
+				else if (checkUPS_right(self.owner) < 300)
 				{
 					self.frame = 5;
 				}
