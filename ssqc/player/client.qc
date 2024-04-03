@@ -682,7 +682,7 @@ void() autosave = { read_currentprofileslot();
 };
 
 .float strafetime;
-.float melee_lunge;
+
 void() wraith_side1;
 
 .float realmaxspeed;
@@ -3883,7 +3883,7 @@ void() PutClientInServer = {
 	if (deathmatch == 1)
 	self.health =  100;	
 	self.viewzoom = 1;
-	spawn_player_model(self); // player_model
+	spawn_player_models(self); // player_model
 	setsize(self, '-16 -16 -32', '16 16 32');
 	check_custom_cvars();
 	localcmd("set cvar_nodegraph 0\n");
