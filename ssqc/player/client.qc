@@ -3918,7 +3918,9 @@ void() PutClientInServer = {
 		fake_coffer.nextthink = time; 
 	}
 	*/
-    self.clipgroup = 1;    
+	if (deathmatch == 0) {
+		self.clipgroup = 1;
+	}   
 	Apply_Lut();
 	stuffcmd(self, "v_flipped 0\n");
 

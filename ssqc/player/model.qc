@@ -94,7 +94,9 @@ void() weapon_think =
 		if(self.owner.weapon == IT_CANNON)
 			setmodel(self, "models/weapons/cannon/w_cannon.md3");
 		if(self.owner.weapon == IT_LANCE)
-			setmodel(self, "models/weapons/lance/w_shotgun.md3");
+			setmodel(self, "models/weapons/lance/w_lance.md3");
+		if(self.owner.weapon == IT_CRYSTAL)
+			setmodel(self, "models/weapons/crystal/w_crystal.md3");
 
 		self.weapon = self.owner.weapon;
 	}
