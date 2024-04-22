@@ -2863,7 +2863,7 @@ void() flight_sound =
 		self.flightimesnd  = 0; 
 	}
 };
-.float melee_lunge;
+
 .float impulsetime;
 //void() check_stunned_monsters;
 void() glow_melee = { local float gd;

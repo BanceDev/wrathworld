@@ -67,7 +67,7 @@ float FL_X = 8388608;
 //globals
 //
 float movedist;
-//float	gameover;		//setwhenaruleexits
+float gameover;		//setwhenaruleexits
 string string_null;	//nullstring,nothingshouldbeheldhere
 entity newmis;	//launch_spikesetsthisafterspawningit
 entity activator;	//theentitythatactivatedatriggerorbrush

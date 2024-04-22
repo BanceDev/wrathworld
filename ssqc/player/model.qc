@@ -1,7 +1,24 @@
 .entity player_model;
 .float melee_lunge;
 
-//Brought in from Q1.5, there might be similar functions elsewhere but I didn't really look so, put that on the todo.
+/*
+So I don't think I understand framegroups properly but I tried to get something working quick and dirty.
+In the end I think I spent more time than necessary but that's half the fun. I also may have misunderstood the original intention on 
+how this was supposed to be implemented but tried to build off what was there as much as my mere mortal brain would allow,
+so hopefully someone (from the original team or otherwise) can step in and maybe tidy things up? 
+I'd be really really greatful to learn more from this. Please and thank you with cinnamon and cherries on top!
+
+See block comment path of destruction below!
+
+Anyway, hopefully things get a little less janky with every submission/PR/drop. Woohoo!
+
+-MrC
+*/
+
+/*
+Brought in from Q1.5, there might be similar functions elsewhere in this codebase but I didn't really look. 
+Also thanks once again for the treasure trove that is Quake 1.5! 
+*/
 
 var float autocvar_debug_frames = 0;
 
@@ -97,12 +114,38 @@ void() weapon_think =
 			setmodel(self, "models/weapons/lance/w_lance.md3");
 		if(self.owner.weapon == IT_CRYSTAL)
 			setmodel(self, "models/weapons/crystal/w_crystal.md3");
+		if(self.owner.weapon == IT_MACE)
+			setmodel(self, "models/weapons/mace/w_mace.md3");		
 
 		self.weapon = self.owner.weapon;
 	}
 	self.think = weapon_think;
 	self.nextthink = time + 0.05;
 };
+
+/*
+// first frame, num frames, frames per second, loop flag
+0	266	20	1	//0 ALL
+0	0	0	0	//1 LEGS_TPOSE
+93	0	0	1	//2 LEGS_STAND_IDLE
+1	13	25	1	//3 LEGS_RUN_FORWARD
+15	13	25	1	//4 LEGS_RUN_BACK
+29	13	25	1	//5 LEGS_RUN_LEFT
+43	13	25	1	//6 LEGS_RUN_RIGHT
+56 	18	20	0	//7 LEGS_STAND_TO_CROUCH
+74	1	0	0	//8 LEGS_CROUCH_IDLE
+75	18	20	0	//9 LEGS_CROUCH_TO_STAND
+94	24	20	1	//10 LEGS_CROUCH_FORWARD
+119 27	20	1	//11 LEGS_CROUCH_BACK
+147 25	20	1	//12 LEGS_CROUCH_LEFT
+173 22	20	1	//13 LEGS_CROUCH_RIGHT
+203	5	20	0	//14 LEGS_JUMP_START
+207	1	0	1	//15 LEGS_JUMP_LOOP
+212	13	20	0	//16 LEGS_JUMP_LAND
+226	21	20	1	//17 LEGS_DASH_LOOP
+248	18	20	0	//18 LEGS_DASH_LAND
+94	0	0	0	//19 NEW LEGS_CROUCH_IDLE
+*/
 
 .float onground_time;
 void() lower_think =
@@ -127,20 +170,30 @@ void() lower_think =
 		{
 			if(self.owner.crouch)
 			{
-				self.frame = 10;
+			//	self.frame = 10;
 				
-				if (self.frame == 10)
+				if (checkUPS_forward(self.owner) > 100)
 				{
-				//	self.origin = self.origin + '0 0 20';
+					self.frame = 10; //CROUCH FORWARD FRAMEGROUP
+
 				}
-				else
+				else if (checkUPS_forward(self.owner) < -100)
 				{
-					//self.origin = self.origin - '0 0 20';
+					self.frame = 11; //CROUCH BACK FRAMEGROUP
+
+				}
+				else if (checkUPS_right(self.owner) > 100)
+				{
+					self.frame = 13; //CROUCH RIGHT
+
+				}
+				else if (checkUPS_right(self.owner) < 100)
+				{
+					self.frame = 12; //CROUCH LEFT
 				}
 			}
 			else
 			{	
-			
 				if (checkUPS_forward(self.owner) > 300)
 				{
 					self.frame = 3; //RUN FORWARD FRAMEGROUP
@@ -165,7 +218,10 @@ void() lower_think =
 		else
 		{
 		if(self.owner.crouch)
-			self.frame = 8;
+		{	
+			self.frame = 19;
+		}
+			
 		else	
 			self.frame = 1;
 		}
@@ -175,7 +231,26 @@ void() lower_think =
 		if (self.owner.melee_lunge == 1)
 		{
 			self.frame = 17;
-		}		
+		}
+		else if (self.owner.waterlevel >= 2)
+		{
+			if (checkUPS_forward(self.owner) > 20)
+			{
+				self.frame = 3; //RUN FORWARD FRAMEGROUP (REPLACE WITH SWIM FORWARD)
+			}
+			else if (checkUPS_forward(self.owner) < -20)
+			{
+				self.frame = 4; //RUN BACK FRAMEGROUP
+			}
+			else if (checkUPS_right(self.owner) > 20)
+			{
+				self.frame = 6;
+			}
+			else if (checkUPS_right(self.owner) < 20)
+			{
+				self.frame = 5;
+			}		
+		}
 		else
 		{
 			self.frame = 15;	
@@ -196,96 +271,119 @@ void() lower_think =
 };
 .entity torso_model;
 .float torso_time;
+/*
+If you add a framegroup to outlander_new_upper.MD3.framegroups, change the following block comment.
+
+//UNTESTED 
+// first frame, num frames, frames per second, loop flag
+0	115	15	1 	//0 ALL
+0	0	0	0	//1 UPPER_TPOSE
+1	1	0	0	//2 UPPER_RIFLE (two handed)
+2	15	20	0	//3 UPPER_DASH_START
+18	21	20	1	//4 UPPER_DASH_LOOP
+40	20	25	0	//5 UPPER_MELEE_ATTACK
+61	1	0	0	//6 UPPER_MELEE_IDLE
+62	7	20	0	//7 UPPER_DASH_FIRE
+70 	18	20	0	//8 UPPER_WEAPON_SWITCH
+1	1	0	0	//9 UPPER_PISTOL_IDLE
+89 	5	10	0	//10 UPPER_PISTOL_ATTACK
+89	5	10	0	//11 UPPER_RIFLE_ATTACK
+95	20 	15	0	//12 UPPER_RIFLE_RELOAD
+89 	5	20	1	//13 UPPER_PISTOL_ATTACK_LOOP
+*/
 void() torso_think =
 {
-	if((self.owner.button0)||(self.owner.button3))
+	self.angles_x = self.owner.angles_x * 2;
+	self.angles_z = 0;
+	self.angles_y = 0;
+	self.think = torso_think;
+	//self.nextthink = time + 0.025;
+	self.nextthink = time + 0.025;
+	
+	if (self.torso_time > time)
+		return;
+	
+	/*
+	if (self.owner.realoding == 1 && self.frame != 12)
 	{
-		if(self.owner.weapon == IT_MELEE && self.frame != 5){
-			self.frame = 5;
+		self.frame = 12;
+		self.torso_time = time + 1.33;
+	//	self.torso_time = time + frameduration(self.modelindex, 12);
+		return;
+	}
+	*/
+	
+	if((self.owner.button0)||(self.owner.button3))
+//	if (self.owner.attack_finished > time)
+	{
+		if(self.owner.button0)
+		{
+				//if((self.owner.weapon == IT_MELEE || self.owner.weapon == IT_MACE) && (self.frame != 5))
+				if(self.owner.weapon == IT_MELEE || self.owner.weapon == IT_MACE)
+				{
+					self.frame = 5;
+				//	self.torso_time = time + frameduration(self.modelindex, 5);
+				//	self.torso_time = time + 0.7;
+				//	return;					
+				}
+				else if ((self.owner.weapon == IT_SHOTGUN) && (self.frame != 12))
+				{
+					self.frame = 12;
+					//self.torso_time = time + 1.33;
+					self.torso_time = time + frameduration(self.modelindex, 12);
+					return;		
+				}
+				/*				
+				else if ((self.owner.weapon == IT_SHOTGUN) && (self.frame != 12))
+				{
+					self.frame = 12;
+					self.torso_time = time + frameduration(self.modelindex, 12);
+					return;		
+				}
+				*/
+				
+				else if (self.owner.weapon == IT_CRYSTAL) //attempt to fix weird frame stuff
+				{
+					self.frame = 13;	
+				}				
+				else
+				{
+					self.frame = 10; //PISTOL (UPPER RIFLE SHOOT FOR NOW)
+					self.torso_time = time + frameduration(self.modelindex, 10);
+					return;	
+				}
 		}
-		else if(self.owner.weapon == IT_SHOTGUN && self.frame != 12){
-			self.frame = 12;
-		}
-		else{
-			self.frame = 11;
+		else
+		{
+			if(self.owner.weapon == IT_MELEE)
+				self.frame = 3;
+
+			if(self.owner.weapon == IT_MACE)
+				self.frame = 7;				
+			
+			if(self.owner.weapon == IT_SHOTGUN)
+				self.frame = 10;	
 		}
 	}
-/* 	else
-	{
-		if(self.frame != 25)
-			self.frame = 25;
-	} */
 	else
 	{
 		if(self.owner.onground_time > time)
 		{
-			if(self.owner.weapon == IT_MELEE)
-				self.frame = 6;
+			if(self.owner.weapon == IT_MELEE || self.owner.weapon == IT_MACE)
+				self.frame = 6; //6
 			else
 				self.frame = 2;
 		}
 		else 
 		{
 			if(self.owner.weapon == IT_MELEE){
-				self.frame = 4;
+				self.frame = 4; //4
 			}
-		}			
-		
-	//	if((self.owner.weapon == IT_MELEE) && (self.frame != 5))
-		/*
-		if((self.owner.attack_finished > time)){
-			self.frame = 6;
-		}
-		else	
-		{
-			if ((self.frame != 11) || (self.frame != 12))
-				self.frame = 2;
-		}
-		*/
-	}
+		}		
 
-	if(self.owner.onground_time > time)
-	{
-		float speed = vlen (self.owner.velocity);
-		if (speed > 30)
-		{
-		if(self.owner.crouch){
-			self.frame = 10;
-		}
-		else{
-			self.frame = 3; //RUN FRAMEGROUP
-		}
-		}
-		else
-		{
-		if(self.owner.crouch)
-			self.frame = 8;
-		else	
-			self.frame = 2;
-		}
+		if(self.owner.weapon == IT_MELEE)
+			self.frame = 7;
 	}
-	else
-	{
-			self.frame = 15;
-
-	}
-	
-	/*
-	if (self.frame == 1)
-	{		
-		self.angles_x = self.owner.angles_x * 1.1;
-	}
-	else
-	{
-		self.angles_x = self.owner.angles_x * 2;
-	}
-	*/
-	
-	self.angles_x = self.owner.angles_x * 2;
-	self.angles_z = 0;
-	self.angles_y = 0;
-	self.think = torso_think;
-	self.nextthink = time + 0.025;
 };
 void(entity e) spawn_player_models =
 {

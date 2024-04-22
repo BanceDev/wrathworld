@@ -38,19 +38,19 @@ void() BackpackTouch =
 
 	// give active weapon
 	if (self.netname == "Lance")
-		other.items += IT_LANCE;
+		other.items |= IT_LANCE;
 	else if (self.netname == "Crystalizer")
-		other.items += IT_CRYSTAL;
+		other.items |= IT_CRYSTAL;
 	else if (self.netname == "Cannon")
-		other.items += IT_CANNON;
+		other.items |= IT_CANNON;
 	else if (self.netname == "Retcher")
-		other.items += IT_RETCHER;
+		other.items |= IT_RETCHER;
 	else if (self.netname == "Spitter")
-		other.items += IT_SPITTER;
+		other.items |= IT_SPITTER;
 	else if (self.netname == "Shotgun")
-		other.items += IT_SHOTGUN;
+		other.items |= IT_SHOTGUN;
 	else if (self.netname == "Revolver")
-		other.items += IT_REVOLVER;
+		other.items |= IT_REVOLVER;
 
 	//play sound
 	sound (other, CHAN_ITEM, "items/ammo_shotgun.ogg", 1, ATTN_NORM);
@@ -109,4 +109,48 @@ void DropBackpack() = {
 	
 	pack.nextthink = time + 120;    // remove after 2 minutes
 	pack.think = SUB_Remove;
+};
+
+/*
+===============================================================================
+
+FFA Rules (10 min matches most frags wins)
+
+===============================================================================
+*/
+
+/*
+============
+CheckRules
+
+Exit deathmatch games upon conditions
+============
+*/
+void() CheckRules =
+{
+	local	float		timelimit;
+	local	float		fraglimit;
+	
+	if (gameover)	// someone else quit the game already
+		return;
+		
+	timelimit = cvar("timelimit") * 60;
+	fraglimit = cvar("fraglimit");
+
+	// just for handling testing rn will make console commands to configure limits later
+	if (timelimit == 0 && deathmatch == 1) {
+		timelimit = 600;
+	}
+	
+	if (timelimit && time >= timelimit)
+	{
+		changelevel("dm-bloodrite");
+		return;
+	}
+	
+	if (fraglimit && self.frags >= fraglimit)
+	{
+		changelevel("dm-bloodrite");
+		return;
+	}	
 };

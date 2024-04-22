@@ -723,6 +723,11 @@ float(entity ent) boss3_crosshairhighlight;
 .vector shadowangle;
 void() PlayerPreThink = 
 {
+	if (deathmatch) {
+		CheckRules();
+	}
+
+
 	self.shadowangle = normalize('1 0 0'); 
 	// Reki (May 9 2023): Fixed this anti-rj logic because it was bugged and a bit inflexible
 	if (self.flags & FL_ONGROUND && self.velocity_z < 200)
